@@ -5,7 +5,7 @@
  *      Author: Admin
  */
 
-void measure_sonar{
+int measure_sonar{
     I2CMSA = 0x0000001C0;
     I2CMDR = 0x000000091;
     I2MCS = 0x000000007;
@@ -18,19 +18,21 @@ void measure_sonar{
     return 0;
 }
 
-void get_value_sonar{
+uint32_t get_value_sonar{
+    uint32_t msg_rx;
+
     I2CMSA = 0x0000001C2;
     I2MCS = 0x000000007;
 
     while(!I2CMCS.BUSBSY);
 
     if(I2CMCS.ERROR == 1)
-        return 1;
+        return 0x000000000;
 
-    return 0;
+    return msg_rx;
 }
 
-void start_I2C(){
+int start_I2C(){
 
     /*perguntar aos outros caralhos o q eles vao inicializar*/
 
