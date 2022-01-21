@@ -10,8 +10,12 @@ GEN_OPTS__FLAG :=
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
+"./Active_State.obj" \
+"./Config_State.obj" \
+"./Init_System.obj" \
 "./KEYBOARD.obj" \
 "./LCD.obj" \
+"./PWM.obj" \
 "./project0.obj" \
 "./startup_ccs.obj" \
 "../project0_ccs.cmd" \
@@ -159,8 +163,8 @@ project0.bin: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "KEYBOARD.obj" "LCD.obj" "project0.obj" "startup_ccs.obj" 
-	-$(RM) "KEYBOARD.d" "LCD.d" "project0.d" "startup_ccs.d" 
+	-$(RM) "Active_State.obj" "Config_State.obj" "Init_System.obj" "KEYBOARD.obj" "LCD.obj" "PWM.obj" "project0.obj" "startup_ccs.obj" 
+	-$(RM) "Active_State.d" "Config_State.d" "Init_System.d" "KEYBOARD.d" "LCD.d" "PWM.d" "project0.d" "startup_ccs.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

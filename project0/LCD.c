@@ -1,12 +1,4 @@
-#include <stdint.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include "inc/hw_types.h"
-#include "inc/hw_memmap.h"
-#include "driverlib/sysctl.h"
-#include "driverlib/gpio.h"
-
-#include "LCD.h"
+#include "System.h"
 
 /**************************************************************
 * Function: void Lcd_Port (char a)
@@ -139,7 +131,7 @@ GPIOPinWrite(GPIO_PORTE_BASE, EN, 0);
 Lcd_Port(temp);
 GPIOPinWrite(GPIO_PORTE_BASE, EN, EN);
 SysCtlDelay(20000);
-GPIOPinWrite(GPIO_PORTE_BASE, EN, 0);;
+GPIOPinWrite(GPIO_PORTE_BASE, EN, 0);
 }
 
 /**************************************************************
@@ -151,6 +143,7 @@ GPIOPinWrite(GPIO_PORTE_BASE, EN, 0);;
 **************************************************************/
 void Lcd_Write_String(const char *a)
 {
+Lcd_Clear();
 int i;
 for(i=0;a[i]!='\0';i++)
 Lcd_Write_Char(a[i]);
@@ -187,10 +180,10 @@ Lcd_Cmd(0x08);
 *
 * Description: Converts a string to an integer
 **************************************************************/
-void Lcd_Write_Integer(int v)
+void Lcd_Write_Integer(long v)
 {
 char buf[8];
-Lcd_Write_String(itoa(buf, v, 10));
+Lcd_Write_String(ltoa(v, buf, 10));
 }
 
 

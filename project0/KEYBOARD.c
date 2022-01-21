@@ -1,20 +1,5 @@
-/*
- * KEYBOARD.c
- *
- *  Created on: Jan 13, 2022
- *      Author: diogo
- */
 
-
-#include <stdint.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include "inc/hw_types.h"
-#include "inc/hw_memmap.h"
-#include "driverlib/sysctl.h"
-#include "driverlib/gpio.h"
-
-#include"KEYBOARD.h"
+#include"System.h"
 
 char keypadScan(){
   //Scan 1st row
