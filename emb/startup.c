@@ -18,18 +18,23 @@ int measure_sonar{
     return 0;
 }
 
-uint32_t get_value_sonar{
+int get_value_sonar{
     uint32_t msg_rx;
 
-    I2CMSA = 0x0000001C2;
-    I2MCS = 0x000000007;
+    I2CMSA = 0x0000001C2; //Mete pra mandar
+    I2CMDR = 0x000000000; //dumies
+    I2MCS = 0x000000007; //Manda
+    I2CMSA = 0x0000001C3; //Mete pra receber
+    I2MCS = 0x000000007; //recebe
 
     while(!I2CMCS.BUSBSY);
 
     if(I2CMCS.ERROR == 1)
-        return 0x000000000;
+        return 0;
+        //return 0x000000000;
 
-    return msg_rx;
+    return 1;
+    //return msg_rx;
 }
 
 int start_I2C(){
