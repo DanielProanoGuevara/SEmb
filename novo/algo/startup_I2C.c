@@ -34,8 +34,7 @@
  */
 
 int measure_sonar(){
-    uint8_t sense_address = 0x70;
-    uint8_t data = 0x51;
+    uint8_t sense_address = 0x70, data = 0x51;
 
     I2CMasterSlaveAddrSet(I2C1_BASE, sense_address, false);
 
@@ -43,24 +42,31 @@ int measure_sonar(){
 
     I2CMasterControl(I2C1_BASE, I2C_MASTER_CMD_SINGLE_SEND);
     while(I2CMasterBusy(I2C1_BASE));
+    if(I2CMasterErr())
+        return -1;
 
     return 1;
 }
 
 int get_value_sonar(int *int_data){
-    int verifica;
+    int aux;
     uint8_t sense_address = 0x70;
 
     I2CMasterSlaveAddrSet(I2C1_BASE, sense_address, true);
 
     I2CMasterControl(I2C1_BASE, I2C_MASTER_CMD_BURST_RECEIVE_START );
     while(I2CMasterBusy(I2C1_BASE));
-    if((verifica = (int)I2CMasterDataGet(I2C1_BASE))!=0 || verifica == 2)
-        return 0;
+    if(I2CMasterErr())
+        return -1;
+
+    aux = (int)I2CMasterDataGet(I2C1_BASE) * 1000;
 
     I2CMasterControl(I2C1_BASE, I2C_MASTER_CMD_BURST_RECEIVE_FINISH);
     while(I2CMasterBusy(I2C1_BASE));
-    *int_data = (int)I2CMasterDataGet(I2C1_BASE);
+    if(I2CMasterErr())
+        return -1;
+
+    *int_data = (int)I2CMasterDataGet(I2C1_BASE) + aux;
 
     return 1;
 }
@@ -77,7 +83,7 @@ void start_I2C(){
 
     GPIOPinConfigure(GPIO_PA6_I2C1SCL);
     GPIOPinConfigure(GPIO_PA7_I2C1SDA);
-  //  GPIOPinTypeGPIOOutputOD(GPIO_PORTA_BASE, GPIO_PIN_6|GPIO_PIN_7);
+    GPIOPinTypeGPIOOutputOD(GPIO_PORTA_BASE, GPIO_PIN_6|GPIO_PIN_7);
 
     GPIOPinTypeI2CSCL(GPIO_PORTA_BASE, GPIO_PIN_6);
     GPIOPinTypeI2C(GPIO_PORTA_BASE, GPIO_PIN_7);
@@ -85,7 +91,10 @@ void start_I2C(){
     I2CMasterInitExpClk(I2C1_BASE, SysCtlClockGet(), false);
 }
 
-int check_dis(int dist, int limit){
-
-
+void check_dis(){
+    if(dist < limit){
+        flag_dist = 0;
+        xSemaphoreGive(semaphore_alarm);
+        xSemaphoreTake(semaphore_wait_alarm, portMAX_DELAY);
+    }
 }
