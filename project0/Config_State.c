@@ -1,16 +1,27 @@
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/* Project for the subject ESEMb, made by Diogo Rodrigues nº94240, Daniel Proanho nº101229, and Miguel Fernandes nº93790
+ *
+ *This file is the Config_State.c, this file was created to keep the main.c file clean and short.
+ *
+ *In this file we have DateTimeSet(), Get_Date(), Get_Time(), Set_PIN, Set_Distance, Set_Timeout.
+ *
+ *A more detailed description of the functions will be in the overhead of the functions.
+ */
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 #include "System.h"
 
-void Config_init(void){
-    GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|BLUE_LED);
-
-    Lcd_Write_String("Configuration State");
-    SysCtlDelay(300000);
-    return;
-}
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*void DateTimeSet(void);
+ *
+ *STILL TESTING NOT FINAL
+ *
+ *this function is calling Get_Date() and Get_Time() to get current date and time inputed by the user and apply it to the already Tiva build
+ *Calendar function.
+ */
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void DateTimeSet(void)
 {
-    struct tm sTime;
     uint32_t ui32Year, ui32Month, ui32Day, ui32Hour, ui32Min, ui32Sec;
 
     Get_Date(&ui32Year, &ui32Month, &ui32Day);
@@ -39,6 +50,16 @@ void DateTimeSet(void)
 
 }*/
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*void Get_Date(uint32_t *ui32Year, uint32_t *ui32Month, uint32_t *ui32Day);
+ *
+ * This function will get the current date by translating the char inputs of the keyboard to int values that will be set in the tm Time
+ * struct with ui32Year, ui32Month, ui32Day.
+ *
+ * It asks the user to input data in the following format "DD-MM-YY", and then waits for the 'A' button to be pressed which is the
+ * confirmation key, if the user has done a mistake it can press the 'B' button to repeat from the beginning.
+ */
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Get_Date(uint32_t *ui32Year, uint32_t *ui32Month, uint32_t *ui32Day){
     int i=0;
     char key;
@@ -46,9 +67,7 @@ void Get_Date(uint32_t *ui32Year, uint32_t *ui32Month, uint32_t *ui32Day){
     char Temp[3];
     Lcd_Write_String("Enter date, B resets");
     SysCtlDelay(300000);
-
-    Lcd_Write_String("DD-MM-YY");
-
+    Lcd_Write_String("DD-MM-YY ");
     while(1)
     {
         GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|BLUE_LED);
@@ -95,6 +114,16 @@ void Get_Date(uint32_t *ui32Year, uint32_t *ui32Month, uint32_t *ui32Day){
     return;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*void Get_Time(uint32_t *ui32Hour, uint32_t *ui32Min, uint32_t *ui32Sec);
+ *
+ * This function will get the current time by translating the char inputs of the keyboard to int values that will be set in the tm Time
+ * struct with ui32Hour, ui32Min, ui32Sec.
+ *
+ * It asks the user to input data in the following format "hh:mm:ss", and then waits for the 'A' button to be pressed which is the
+ * confirmation key, if the user has done a mistake it can press the 'B' button to repeat from the beginning.
+ */
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void Get_Time(uint32_t *ui32Hour, uint32_t *ui32Min, uint32_t *ui32Sec){
     GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|BLUE_LED);
     int i=0;
@@ -102,10 +131,8 @@ void Get_Time(uint32_t *ui32Hour, uint32_t *ui32Min, uint32_t *ui32Sec){
     char TimeArray[7];
     char Temp[3];
     Lcd_Write_String("Enter time, B resets");
-    SysCtlDelay(1000000);
-
+    SysCtlDelay(300000);
     Lcd_Write_String("hh:mm:ss ");
-
     while(i < 7)
     {
         GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|BLUE_LED);
@@ -151,17 +178,23 @@ void Get_Time(uint32_t *ui32Hour, uint32_t *ui32Min, uint32_t *ui32Sec){
     return;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*int Set_PIN(void);
+ *
+ * This function will get the PIN by translating the char inputs of the keyboard to a int value that will be stored in main.c
+ *
+ * It asks the user to input data in the following format "****", and then waits for the 'A' button to be pressed which is the
+ * confirmation key, if the user has done a mistake it can press the 'B' button to repeat from the beginning.
+ */
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int Set_PIN(void){
     GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|BLUE_LED);
     int i=0;
     char key;
     char PIN[5];
-
     Lcd_Write_String("Enter PIN, B resets");
-    SysCtlDelay(1000000);
-
+    SysCtlDelay(300000);
     Lcd_Write_String("****, ");
-
     while(i < 5)
     {
         GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|BLUE_LED);
@@ -196,17 +229,24 @@ int Set_PIN(void){
     return intPIN;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*int Set_Distance(void);
+ *
+ * This function will get the alarm triggering distance by translating the char inputs of the keyboard to a int value that will be stored
+ * in main.c
+ *
+ * It asks the user to input data in the following format "***", and then waits for the 'A' button to be pressed which is the
+ * confirmation key, if the user has done a mistake it can press the 'B' button to repeat from the beginning.
+ */
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int Set_Distance(void){
     GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|BLUE_LED);
     int i=0;
     char key;
     char distance[3];
-
     Lcd_Write_String("Enter trigger distan");
-    SysCtlDelay(1000000);
-
+    SysCtlDelay(300000);
     Lcd_Write_String("in *** cm, ");
-
     while(1)
     {
         GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|BLUE_LED);
@@ -241,17 +281,24 @@ int Set_Distance(void){
       return intDistance;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*int Set_Timeout(void);
+ *
+ * This function will get the tasks timeout time by translating the char inputs of the keyboard to a int value that will be stored
+ * in main.c
+ *
+ * It asks the user to input data in the following format "****", and then waits for the 'A' button to be pressed which is the
+ * confirmation key, if the user has done a mistake it can press the 'B' button to repeat from the beginning.
+ */
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int Set_Timeout(void){
     GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|BLUE_LED);
     int i=0;
     char key;
     char timeout[3];
-
     Lcd_Write_String("Enter timeout time");
-    SysCtlDelay(1000000);
-
+    SysCtlDelay(300000);
     Lcd_Write_String("in ** s, ");
-
     while(1)
     {
         GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|BLUE_LED);

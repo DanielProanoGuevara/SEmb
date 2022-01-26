@@ -28,7 +28,6 @@ project0.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/i2c.h
 project0.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/pin_map.h
 project0.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/sysctl.h
 project0.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/gpio.h
-project0.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/interrupt.h
 project0.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/hibernate.h
 
 ../project0.c:
@@ -86,8 +85,6 @@ C:/ti/tivaware_c_series_2_1_4_178/driverlib/pin_map.h:
 C:/ti/tivaware_c_series_2_1_4_178/driverlib/sysctl.h:
 
 C:/ti/tivaware_c_series_2_1_4_178/driverlib/gpio.h:
-
-C:/ti/tivaware_c_series_2_1_4_178/driverlib/interrupt.h:
 
 C:/ti/tivaware_c_series_2_1_4_178/driverlib/hibernate.h:
 

@@ -28,7 +28,6 @@ LCD.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/i2c.h
 LCD.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/pin_map.h
 LCD.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/sysctl.h
 LCD.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/gpio.h
-LCD.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/interrupt.h
 LCD.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/hibernate.h
 
 ../LCD.c:
@@ -86,8 +85,6 @@ C:/ti/tivaware_c_series_2_1_4_178/driverlib/pin_map.h:
 C:/ti/tivaware_c_series_2_1_4_178/driverlib/sysctl.h:
 
 C:/ti/tivaware_c_series_2_1_4_178/driverlib/gpio.h:
-
-C:/ti/tivaware_c_series_2_1_4_178/driverlib/interrupt.h:
 
 C:/ti/tivaware_c_series_2_1_4_178/driverlib/hibernate.h:
 

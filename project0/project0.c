@@ -3,6 +3,13 @@
  *
  *This file is considered the main file, contains the State Machine and calls the function to start the system(init_system).
  *
+ *In this Program LEDs from the Tiva are turned on depending on where the program is running:
+ *               White-> Initialization of the peripherals - Init_System.c
+ *               Cyan-> Configuration State - Config_State.c
+ *               Yellow-> Active State - Active_State.c
+ *               Red-> Input on the Keyboard - various files
+ *               Purple-> Beacon State - main.c
+ *
  *The State Machine has 3 states:
  *
  *The Configuration State:(state 0) Gets the date and time for the RTC, the PIN too arm/disarm the alarm, the trigger distance
@@ -13,7 +20,7 @@
  *                E-> check date and time.
  *                D-> access file with the alarm triggered dates and times.
  *                C-> to arm or disarm alarm.
- *                When in idle it show the distance of the alarm and is that distance is lower or equal than the trigger distance,
+ *                When in idle it show the distance of an object to the sensor and if that distance is lower or equal than the trigger distance,
  *                the alarm will trigger the buzzer in 15 seconds if the correct pin is not inputed, while this is happening the
  *                other functions of the Active State are Locked. The input of the PIN is done on the next state(Beacon State)
  *                but the count down and the trigger of the buzzer is done in Active State.
@@ -26,6 +33,8 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "System.h" // This header file has everything for this project to work, better explained in System.h file.
+
+struct tm sTime;
 
 int main(void){
     
@@ -45,7 +54,9 @@ int main(void){
         {
 
             case 0: // Configuration State for more details go to Config_State.c file
-                Config_init();
+                GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|BLUE_LED);
+                Lcd_Write_String("Configuration State");
+                SysCtlDelay(300000);
                 DateTimeSet();
                 PIN = Set_PIN();
                 trigger_distance = Set_Distance();
@@ -79,6 +90,7 @@ int main(void){
                 alarm_armed = FALSE;// This line is a flag for the Unblocking of the Active State
                 Lcd_Write_String("ALARM DISARMED1!");// A similar line is on Active State to see if both get out of the alarm trigger "state"
                 state = 1;  // Returning to Active State when the task are separated this line should be deleted
+                HibernateCalendarGet(&sTime);
                 SysCtlDelay(40000);
                 break;
 

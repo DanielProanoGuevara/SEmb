@@ -28,12 +28,12 @@ PWM.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/i2c.h
 PWM.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/pin_map.h
 PWM.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/sysctl.h
 PWM.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/gpio.h
-PWM.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/interrupt.h
 PWM.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/hibernate.h
 PWM.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/pwm.c
 PWM.obj: C:/ti/tivaware_c_series_2_1_4_178/inc/hw_pwm.h
 PWM.obj: C:/ti/tivaware_c_series_2_1_4_178/inc/hw_sysctl.h
 PWM.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/debug.h
+PWM.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/interrupt.h
 PWM.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/pwm.h
 
 ../PWM.c:
@@ -92,8 +92,6 @@ C:/ti/tivaware_c_series_2_1_4_178/driverlib/sysctl.h:
 
 C:/ti/tivaware_c_series_2_1_4_178/driverlib/gpio.h:
 
-C:/ti/tivaware_c_series_2_1_4_178/driverlib/interrupt.h:
-
 C:/ti/tivaware_c_series_2_1_4_178/driverlib/hibernate.h:
 
 C:/ti/tivaware_c_series_2_1_4_178/driverlib/pwm.c:
@@ -103,6 +101,8 @@ C:/ti/tivaware_c_series_2_1_4_178/inc/hw_pwm.h:
 C:/ti/tivaware_c_series_2_1_4_178/inc/hw_sysctl.h:
 
 C:/ti/tivaware_c_series_2_1_4_178/driverlib/debug.h:
+
+C:/ti/tivaware_c_series_2_1_4_178/driverlib/interrupt.h:
 
 C:/ti/tivaware_c_series_2_1_4_178/driverlib/pwm.h:
 
