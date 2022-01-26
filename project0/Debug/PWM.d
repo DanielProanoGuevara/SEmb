@@ -16,9 +16,15 @@ PWM.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/stdlib.h
 PWM.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/stdbool.h
 PWM.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/string.h
 PWM.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/xlocale/_string.h
+PWM.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/stdarg.h
+PWM.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/time.h
+PWM.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/abi_prefix.h
+PWM.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/xlocale/_time.h
+PWM.obj: C:/ti/tivaware_c_series_2_1_4_178/inc/hw_i2c.h
 PWM.obj: C:/ti/tivaware_c_series_2_1_4_178/inc/hw_types.h
 PWM.obj: C:/ti/tivaware_c_series_2_1_4_178/inc/hw_memmap.h
 PWM.obj: C:/ti/tivaware_c_series_2_1_4_178/inc/hw_ints.h
+PWM.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/i2c.h
 PWM.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/pin_map.h
 PWM.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/sysctl.h
 PWM.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/gpio.h
@@ -62,11 +68,23 @@ C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/string.h:
 
 C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/xlocale/_string.h:
 
+C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/stdarg.h:
+
+C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/time.h:
+
+C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/abi_prefix.h:
+
+C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/xlocale/_time.h:
+
+C:/ti/tivaware_c_series_2_1_4_178/inc/hw_i2c.h:
+
 C:/ti/tivaware_c_series_2_1_4_178/inc/hw_types.h:
 
 C:/ti/tivaware_c_series_2_1_4_178/inc/hw_memmap.h:
 
 C:/ti/tivaware_c_series_2_1_4_178/inc/hw_ints.h:
+
+C:/ti/tivaware_c_series_2_1_4_178/driverlib/i2c.h:
 
 C:/ti/tivaware_c_series_2_1_4_178/driverlib/pin_map.h:
 

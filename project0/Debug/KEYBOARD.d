@@ -16,9 +16,15 @@ KEYBOARD.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/std
 KEYBOARD.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/stdbool.h
 KEYBOARD.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/string.h
 KEYBOARD.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/xlocale/_string.h
+KEYBOARD.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/stdarg.h
+KEYBOARD.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/time.h
+KEYBOARD.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/abi_prefix.h
+KEYBOARD.obj: C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/xlocale/_time.h
+KEYBOARD.obj: C:/ti/tivaware_c_series_2_1_4_178/inc/hw_i2c.h
 KEYBOARD.obj: C:/ti/tivaware_c_series_2_1_4_178/inc/hw_types.h
 KEYBOARD.obj: C:/ti/tivaware_c_series_2_1_4_178/inc/hw_memmap.h
 KEYBOARD.obj: C:/ti/tivaware_c_series_2_1_4_178/inc/hw_ints.h
+KEYBOARD.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/i2c.h
 KEYBOARD.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/pin_map.h
 KEYBOARD.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/sysctl.h
 KEYBOARD.obj: C:/ti/tivaware_c_series_2_1_4_178/driverlib/gpio.h
@@ -57,11 +63,23 @@ C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/string.h:
 
 C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/xlocale/_string.h:
 
+C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/stdarg.h:
+
+C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/time.h:
+
+C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/abi_prefix.h:
+
+C:/ti/ccs1100/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include/xlocale/_time.h:
+
+C:/ti/tivaware_c_series_2_1_4_178/inc/hw_i2c.h:
+
 C:/ti/tivaware_c_series_2_1_4_178/inc/hw_types.h:
 
 C:/ti/tivaware_c_series_2_1_4_178/inc/hw_memmap.h:
 
 C:/ti/tivaware_c_series_2_1_4_178/inc/hw_ints.h:
+
+C:/ti/tivaware_c_series_2_1_4_178/driverlib/i2c.h:
 
 C:/ti/tivaware_c_series_2_1_4_178/driverlib/pin_map.h:
 

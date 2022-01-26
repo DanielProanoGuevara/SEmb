@@ -45,4 +45,12 @@ void init_system(void){
     GPIOPinTypeGPIOOutput(GPIO_PORTB_BASE, R1|R2|R3|R4);
 
     GPIOPinTypeGPIOInput(GPIO_PORTB_BASE, C1|C2|C3|C4);
+
+    GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|RED_LED|BLUE_LED);
+
+    start_I2C();
+
+    pwm0_init();
+
+    Lcd_Init();
 }

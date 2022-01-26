@@ -11,6 +11,7 @@ CMD_SRCS += \
 C_SRCS += \
 ../Active_State.c \
 ../Config_State.c \
+../I2C_Sensor.c \
 ../Init_System.c \
 ../KEYBOARD.c \
 ../LCD.c \
@@ -21,6 +22,7 @@ C_SRCS += \
 C_DEPS += \
 ./Active_State.d \
 ./Config_State.d \
+./I2C_Sensor.d \
 ./Init_System.d \
 ./KEYBOARD.d \
 ./LCD.d \
@@ -31,6 +33,7 @@ C_DEPS += \
 OBJS += \
 ./Active_State.obj \
 ./Config_State.obj \
+./I2C_Sensor.obj \
 ./Init_System.obj \
 ./KEYBOARD.obj \
 ./LCD.obj \
@@ -41,6 +44,7 @@ OBJS += \
 OBJS__QUOTED += \
 "Active_State.obj" \
 "Config_State.obj" \
+"I2C_Sensor.obj" \
 "Init_System.obj" \
 "KEYBOARD.obj" \
 "LCD.obj" \
@@ -51,6 +55,7 @@ OBJS__QUOTED += \
 C_DEPS__QUOTED += \
 "Active_State.d" \
 "Config_State.d" \
+"I2C_Sensor.d" \
 "Init_System.d" \
 "KEYBOARD.d" \
 "LCD.d" \
@@ -61,6 +66,7 @@ C_DEPS__QUOTED += \
 C_SRCS__QUOTED += \
 "../Active_State.c" \
 "../Config_State.c" \
+"../I2C_Sensor.c" \
 "../Init_System.c" \
 "../KEYBOARD.c" \
 "../LCD.c" \

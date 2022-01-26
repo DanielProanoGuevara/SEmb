@@ -1,148 +1,240 @@
-
 #include "System.h"
 
 void Config_init(void){
     GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|BLUE_LED);
 
     Lcd_Write_String("Configuration State");
-    SysCtlDelay(3000000);
+    SysCtlDelay(300000);
+    return;
 }
 
-void Get_Date(char *DateArray){
-    GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED);
+void DateTimeSet(void)
+{
+    struct tm sTime;
+    uint32_t ui32Year, ui32Month, ui32Day, ui32Hour, ui32Min, ui32Sec;
+
+    Get_Date(&ui32Year, &ui32Month, &ui32Day);
+    Get_Time(&ui32Hour, &ui32Min, &ui32Sec);
+
+    HibernateCalendarGet(&sTime);
+
+    sTime.tm_sec = ui32Sec;
+    sTime.tm_min = ui32Min;
+    sTime.tm_hour = ui32Hour;
+    sTime.tm_mday = ui32Day;
+    sTime.tm_mon = ui32Month;
+    sTime.tm_year = 100 + ui32Year;
+
+    HibernateCalendarSet(&sTime);
+
+}
+
+/*void DateTimeDefaultSet(void)
+{
+    g_ui32MonthIdx = 7;
+    g_ui32DayIdx = 29;
+    g_ui32YearIdx = 13;
+    g_ui32HourIdx = 8;
+    g_ui32MinIdx = 30;
+
+}*/
+
+void Get_Date(uint32_t *ui32Year, uint32_t *ui32Month, uint32_t *ui32Day){
     int i=0;
     char key;
-
+    char DateArray[7];
+    char Temp[3];
     Lcd_Write_String("Enter date, B resets");
-    SysCtlDelay(3000000);
+    SysCtlDelay(300000);
 
-    Lcd_Write_String("DD-MM-YYYY");
-    SysCtlDelay(3000000);
+    Lcd_Write_String("DD-MM-YY");
 
-    while(i < 8)
+    while(1)
     {
-        GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED);
+        GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|BLUE_LED);
         key = keypadScan();
-        if (key != 'n')
+        if (key != 'n' && i < 7)
         {
             GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, RED_LED);
+
+            if(key == 'A'){
+                i++;
+                break;
+            }
 
             DateArray[i] = key;
             Lcd_Write_Char(key);
 
             if(i == 1|| i == 3) Lcd_Write_Char('-');
-            i++;
 
-            if(key == 'B'){
-                for ( i = 0; i < 8; ++i) {
-                    DateArray[i] = 0;
-                }
-                i=0;
-            }
-         }
+            i++;
+        }
+        if(key == 'A'){
+            i++;
+            break;
+        }
+        if(key == 'B')
+        {
+            for ( i = 0; i < 8; ++i)
+                DateArray[i] = 0;
+            i=0;
+            Lcd_Write_String("DD-MM-YY");
+        }
     }
+    Temp[0] = DateArray[0];
+    Temp[1] = DateArray[1];
+    *ui32Day = atoi(Temp);
+
+    Temp[0] = DateArray[2];
+    Temp[1] = DateArray[3];
+    *ui32Month = atoi(Temp);
+
+    Temp[0] = DateArray[4];
+    Temp[1] = DateArray[5];
+    *ui32Year = atoi(Temp);
+    return;
 }
 
-void Get_Time(char *TimeArray){
-    GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, BLUE_LED);
+void Get_Time(uint32_t *ui32Hour, uint32_t *ui32Min, uint32_t *ui32Sec){
+    GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|BLUE_LED);
     int i=0;
     char key;
-
+    char TimeArray[7];
+    char Temp[3];
     Lcd_Write_String("Enter time, B resets");
     SysCtlDelay(1000000);
 
     Lcd_Write_String("hh:mm:ss ");
-    SysCtlDelay(1000000);
 
-    while(i < 6)
+    while(i < 7)
     {
-        GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, BLUE_LED);
+        GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|BLUE_LED);
         key = keypadScan();
-        if (key != 'n')
+        if (key != 'n' && i < 7)
         {
             GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, RED_LED);
+
+            if(key == 'A'){
+               i++;
+               break;
+            }
 
             TimeArray[i] = key;
             Lcd_Write_Char(key);
 
-            if(i == 1|| i == 3) Lcd_Write_Char('-');
+            if(i == 1|| i == 3) Lcd_Write_Char(':');
             i++;
-
-            if(key == 'B'){
-                for ( i = 0; i <6; ++i) {
-                    TimeArray[i] = 0;
-                }
-                i=0;
-            }
+        }
+        if(key == 'A'){
+            i++;
+            break;
+        }
+        if(key == 'B')
+        {
+            for ( i = 0; i <6; ++i)
+                TimeArray[i] = 0;
+            i=0;
+            Lcd_Write_String("hh:mm:ss ");
         }
     }
-    HibernateRTCSet(0);
+    Temp[0] = TimeArray[0];
+    Temp[1] = TimeArray[1];
+    *ui32Hour = atoi(Temp);
+
+    Temp[0] = TimeArray[2];
+    Temp[1] = TimeArray[3];
+    *ui32Min = atoi(Temp);
+
+    Temp[0] = TimeArray[4];
+    Temp[1] = TimeArray[5];
+    *ui32Sec = atoi(Temp);
+    return;
 }
 
-void Set_PIN(char *PIN){
-    GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED);
+int Set_PIN(void){
+    GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|BLUE_LED);
     int i=0;
     char key;
+    char PIN[5];
 
     Lcd_Write_String("Enter PIN, B resets");
     SysCtlDelay(1000000);
 
-    Lcd_Write_String("**** ");
-    SysCtlDelay(1000000);
+    Lcd_Write_String("****, ");
 
-    while(i < 4)
+    while(i < 5)
     {
-        GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED);
+        GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|BLUE_LED);
         key = keypadScan();
-        if (key != 'n')
+        if (key != 'n' && i < 5)
         {
             GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, RED_LED);
+
+            if(key == 'A'){
+               i++;
+               break;
+            }
 
             PIN[i] = key;
             Lcd_Write_Char(key);
 
             i++;
-
-            if(key == 'B'){
-                for ( i = 0; i < 4; ++i) {
-                    PIN[i] = 0;
-                }
-                i=0;
-            }
-         }
+        }
+        if(key == 'A'){
+             i++;
+             break;
+        }
+        if(key == 'B')
+        {
+             for ( i = 0; i < 4; ++i)
+                 PIN[i] = 0;
+             i=0;
+             Lcd_Write_String("**** ");
+        }
     }
+    int intPIN = atoi(PIN);
+    return intPIN;
 }
+
 int Set_Distance(void){
-    GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, BLUE_LED);
+    GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|BLUE_LED);
     int i=0;
     char key;
     char distance[3];
 
-    Lcd_Write_String("Set off alarm dist");
+    Lcd_Write_String("Enter trigger distan");
     SysCtlDelay(1000000);
 
     Lcd_Write_String("in *** cm, ");
-    SysCtlDelay(1000000);
 
-    while(i < 3)
+    while(1)
     {
-        GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, BLUE_LED);
+        GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|BLUE_LED);
         key = keypadScan();
-        if (key != 'n')
+        if (key != 'n' && i < 3)
         {
             GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, RED_LED);
+
+            if(key == 'A'){
+               i++;
+               break;
+            }
 
             distance[i] = key;
             Lcd_Write_Char(key);
 
             i++;
-            if(key == 'B'){
-                for ( i = 0; i < 3; ++i) {
-                    distance[i] = 0;
-                }
-                i=0;
-            }
-
+         }
+         if(key == 'A'){
+             i++;
+             break;
+         }
+         if(key == 'B')
+         {
+             for ( i = 0; i < 3; ++i)
+                 distance[i] = 0;
+             i=0;
+             Lcd_Write_String("in *** cm, ");
          }
       }
       int intDistance = atoi(distance);
@@ -150,36 +242,51 @@ int Set_Distance(void){
 }
 
 int Set_Timeout(void){
-    GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED);
+    GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|BLUE_LED);
     int i=0;
     char key;
-    char timeout[2];
+    char timeout[3];
 
-    Lcd_Write_String("Enter Timeout time");
+    Lcd_Write_String("Enter timeout time");
     SysCtlDelay(1000000);
 
-    Lcd_Write_String("in s, B resets, ");
-    SysCtlDelay(1000000);
+    Lcd_Write_String("in ** s, ");
 
-    while(i < 2)
+    while(1)
     {
-        GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED);
+        GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|BLUE_LED);
         key = keypadScan();
-        if (key != 'n')
+        if (key != 'n' && i < 3)
         {
             GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, RED_LED);
+
+            if(key == 'A'){
+               i++;
+               break;
+            }
 
             timeout[i] = key;
             Lcd_Write_Char(key);
 
             i++;
-            if(key == 'B'){
-                for ( i = 0; i < 2; ++i) {
+            if(key == 'B')
+            {
+                for ( i = 0; i < 2; ++i)
                     timeout[i] = 0;
-                }
                 i=0;
+                Lcd_Write_String("in s, B resets, ");
             }
-
+         }
+         if(key == 'A'){
+             i++;
+             break;
+         }
+         if(key == 'B')
+         {
+             for ( i = 0; i < 2; ++i)
+                 timeout[i] = 0;
+             i=0;
+             Lcd_Write_String("in s, B resets, ");
          }
       }
       int intTimeout = atoi(timeout);

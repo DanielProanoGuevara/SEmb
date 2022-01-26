@@ -147,7 +147,9 @@ Lcd_Clear();
 int i;
 for(i=0;a[i]!='\0';i++)
 Lcd_Write_Char(a[i]);
+a = "";
 }
+
 /**************************************************************
 * Function: void Lcd_Shift_Right()
 *
@@ -183,6 +185,11 @@ Lcd_Cmd(0x08);
 void Lcd_Write_Integer(long v)
 {
 char buf[8];
+Lcd_Clear();
+int i;
+for ( i = 0; i < 8; ++i) {
+    buf[i] = 0;
+}
 Lcd_Write_String(ltoa(v, buf, 10));
 }
 
