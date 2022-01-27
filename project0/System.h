@@ -1,15 +1,22 @@
-/*
- * Init_System.h
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/* Project for the subject SEmb, made by Diogo Rodrigues nº94240, Daniel Proanho nº101229, and Miguel Fernandes nº93790
  *
- *  Created on: Jan 20, 2022
- *      Author: diogo
+ * This file is the System.h, this file was created to keep the program cleaner of multiple repetition of library, call, and headers.
+ *
+ * In this file we have headers for the System, LCD, KEYBOARD, PWM, Configuration State, Active State, I2C and the Ultrasonic Sensor
+ *
+ * This file has the possibility to become a task by itself.
+ *
+ * A more detailed description of the functions will be in the overhead of the functions.
  */
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef SYSTEM_H_
 #define SYSTEM_H_
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
 #include <stdarg.h>
@@ -30,7 +37,7 @@
 
 ////////////////////////////////////////////////////////////////////////////
 
-struct tm sTime;
+struct tm sTime, sTrigger;
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -66,9 +73,11 @@ void Lcd_Set_Cursor(char a, char b);
 void Lcd_Init(void);
 void Lcd_Write_Char(char a);
 void Lcd_Write_String(const char *a);
+void Lcd_Write_String2(const char *a);
 void Lcd_Shift_Right(void);
 void Lcd_Shift_Left(void);
 void Lcd_Write_Integer(long v);
+void Lcd_Write_Integer2(long v);
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -122,6 +131,12 @@ int Set_Timeout(void);
 // ATIVE STATE
 
 ////////////////////////////////////////////////////////////////////////////
+
+void update_Date_Time(void);
+
+void update_Trigger_Date_Time(void);
+
+void show_Trigger_Date_Time(void);
 
 void alarm_Triggered(int * alarm_armed);
 

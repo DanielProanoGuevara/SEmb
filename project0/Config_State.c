@@ -1,33 +1,28 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/* Project for the subject ESEMb, made by Diogo Rodrigues nº94240, Daniel Proanho nº101229, and Miguel Fernandes nº93790
+/* Project for the subject SEmb, made by Diogo Rodrigues nº94240, Daniel Proanho nº101229, and Miguel Fernandes nº93790
  *
- *This file is the Config_State.c, this file was created to keep the main.c file clean and short.
+ * This file is the Config_State.c, this file was created to keep the main.c file clean and short.
  *
- *In this file we have DateTimeSet(), Get_Date(), Get_Time(), Set_PIN, Set_Distance, Set_Timeout.
+ * In this file we have DateTimeSet(), Get_Date(), Get_Time(), Set_PIN, Set_Distance, Set_Timeout.
  *
- *A more detailed description of the functions will be in the overhead of the functions.
+ * A more detailed description of the functions will be in the overhead of the functions.
  */
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "System.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*void DateTimeSet(void);
+/* void DateTimeSet(void);
  *
- *STILL TESTING NOT FINAL
- *
- *this function is calling Get_Date() and Get_Time() to get current date and time inputed by the user and apply it to the already Tiva build
- *Calendar function.
+ * this function is calling Get_Date() and Get_Time() to get current date and time inputed by the user and applied in the time global struct.
  */
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void DateTimeSet(void)
 {
     uint32_t ui32Year, ui32Month, ui32Day, ui32Hour, ui32Min, ui32Sec;
 
     Get_Date(&ui32Year, &ui32Month, &ui32Day);
     Get_Time(&ui32Hour, &ui32Min, &ui32Sec);
-
-    HibernateCalendarGet(&sTime);
 
     sTime.tm_sec = ui32Sec;
     sTime.tm_min = ui32Min;
@@ -36,22 +31,28 @@ void DateTimeSet(void)
     sTime.tm_mon = ui32Month;
     sTime.tm_year = 100 + ui32Year;
 
-    HibernateCalendarSet(&sTime);
+    HibernateRTCSet(0);
 
+    Lcd_Clear();
+    Lcd_Write_Integer2(ui32Year);
+    Lcd_Write_Char('-');
+    Lcd_Write_Integer2(ui32Month);
+    Lcd_Write_Char('-');
+    Lcd_Write_Integer2(ui32Day);
+    Lcd_Write_Char(' ');
+    Lcd_Write_Integer2(ui32Hour);
+    Lcd_Write_Char(':');
+    Lcd_Write_Integer2(ui32Min);
+    Lcd_Write_Char(':');
+    Lcd_Write_Integer2(ui32Sec);
+
+    SysCtlDelay(1000000);
+
+    return;
 }
 
-/*void DateTimeDefaultSet(void)
-{
-    g_ui32MonthIdx = 7;
-    g_ui32DayIdx = 29;
-    g_ui32YearIdx = 13;
-    g_ui32HourIdx = 8;
-    g_ui32MinIdx = 30;
-
-}*/
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*void Get_Date(uint32_t *ui32Year, uint32_t *ui32Month, uint32_t *ui32Day);
+/* void Get_Date(uint32_t *ui32Year, uint32_t *ui32Month, uint32_t *ui32Day);
  *
  * This function will get the current date by translating the char inputs of the keyboard to int values that will be set in the tm Time
  * struct with ui32Year, ui32Month, ui32Day.
@@ -97,7 +98,7 @@ void Get_Date(uint32_t *ui32Year, uint32_t *ui32Month, uint32_t *ui32Day){
             for ( i = 0; i < 8; ++i)
                 DateArray[i] = 0;
             i=0;
-            Lcd_Write_String("DD-MM-YY");
+            Lcd_Write_String("DD-MM-YY ");
         }
     }
     Temp[0] = DateArray[0];
@@ -115,10 +116,10 @@ void Get_Date(uint32_t *ui32Year, uint32_t *ui32Month, uint32_t *ui32Day){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*void Get_Time(uint32_t *ui32Hour, uint32_t *ui32Min, uint32_t *ui32Sec);
+/* void Get_Time(uint32_t *ui32Hour, uint32_t *ui32Min, uint32_t *ui32Sec);
  *
  * This function will get the current time by translating the char inputs of the keyboard to int values that will be set in the tm Time
- * struct with ui32Hour, ui32Min, ui32Sec.
+ * strut with ui32Hour, ui32Min, ui32Sec.
  *
  * It asks the user to input data in the following format "hh:mm:ss", and then waits for the 'A' button to be pressed which is the
  * confirmation key, if the user has done a mistake it can press the 'B' button to repeat from the beginning.
@@ -179,7 +180,7 @@ void Get_Time(uint32_t *ui32Hour, uint32_t *ui32Min, uint32_t *ui32Sec){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*int Set_PIN(void);
+/* int Set_PIN(void);
  *
  * This function will get the PIN by translating the char inputs of the keyboard to a int value that will be stored in main.c
  *
@@ -230,7 +231,7 @@ int Set_PIN(void){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*int Set_Distance(void);
+/* int Set_Distance(void);
  *
  * This function will get the alarm triggering distance by translating the char inputs of the keyboard to a int value that will be stored
  * in main.c
@@ -282,7 +283,7 @@ int Set_Distance(void){
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*int Set_Timeout(void);
+/* int Set_Timeout(void);
  *
  * This function will get the tasks timeout time by translating the char inputs of the keyboard to a int value that will be stored
  * in main.c
@@ -295,7 +296,7 @@ int Set_Timeout(void){
     GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|BLUE_LED);
     int i=0;
     char key;
-    char timeout[3];
+    char timeout[2];
     Lcd_Write_String("Enter timeout time");
     SysCtlDelay(300000);
     Lcd_Write_String("in ** s, ");

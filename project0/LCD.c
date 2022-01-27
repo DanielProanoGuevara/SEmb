@@ -150,6 +150,22 @@ Lcd_Write_Char(a[i]);
 a = "";
 }
 
+
+/**************************************************************
+* Function: void Lcd_Write_String (const char *a)
+*
+* Returns: Nothing
+*
+* Description: Writes a string to the LCD without Lcd_Clear()
+**************************************************************/
+void Lcd_Write_String2(const char *a)
+{
+int i;
+for(i=0;a[i]!='\0';i++)
+Lcd_Write_Char(a[i]);
+a = "";
+}
+
 /**************************************************************
 * Function: void Lcd_Shift_Right()
 *
@@ -185,7 +201,6 @@ Lcd_Cmd(0x08);
 void Lcd_Write_Integer(long v)
 {
 char buf[8];
-Lcd_Clear();
 int i;
 for ( i = 0; i < 8; ++i) {
     buf[i] = 0;
@@ -193,4 +208,19 @@ for ( i = 0; i < 8; ++i) {
 Lcd_Write_String(ltoa(v, buf, 10));
 }
 
-
+/**********************************************************************
+* Function: void Lcd_Write_Integer(int v)
+*
+* Returns: Nothing
+*
+* Description: Converts a string to an integer without Lcd_Clear()
+***********************************************************************/
+void Lcd_Write_Integer2(long v)
+{
+char buf[8];
+int i;
+for ( i = 0; i < 8; ++i) {
+    buf[i] = 0;
+}
+Lcd_Write_String2(ltoa(v, buf, 10));
+}

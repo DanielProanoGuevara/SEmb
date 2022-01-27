@@ -32,7 +32,7 @@ void init_system(void){
 
     //System, ports and peripherals set up! Now setting I2C, the Buzzer and the Lcd. The keyboard and the sensor doesn't need a setup
     GPIOPinWrite(GPIO_PORTF_BASE, GREEN_LED|RED_LED|BLUE_LED, GREEN_LED|RED_LED|BLUE_LED);
-    start_I2C()
+    start_I2C();
     pwm0_init();
     Lcd_Init();
 }

@@ -1,13 +1,13 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/* Project for the subject ESEMb, made by Diogo Rodrigues nº94240, Daniel Proanho nº101229, and Miguel Fernandes nº93790
+/* Project for the subject SEmb, made by Diogo Rodrigues nº94240, Daniel Proanho nº101229, and Miguel Fernandes nº93790
  *
- *This file is the Active_State.c, this file was created to keep the main.c file clean and short.
+ * This file is the Active_State.c, this file was created to keep the main.c file clean and short.
  *
- *In this file we have alarm_Triggered(), check_PIN(), Active_State().
+ * In this file we have alarm_Triggered(), check_PIN(), Active_State().
  *
- *This file has the possibility to become a task by itself.
+ * This file has the possibility to become a task by itself.
  *
- *A more detailed description of the functions will be in the overhead of the functions.
+ * A more detailed description of the functions will be in the overhead of the functions.
  */
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -28,28 +28,216 @@
  */
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void alarm_Triggered(int * alarm_armed){
-    int n1, n3; //n2
+    int n1, n2, n3, i;
     Lcd_Write_String("ALARM TRIGGERED!");
     SysCtlDelay(40000);
     Lcd_Write_String("ALARM TRIGGERED!");
     SysCtlDelay(40000);
-    n2 = HibernateRTCGet(); // if the HibernateRTCSet(0); only works once in the Init_System.c uncomment this line and erase line 35
+    n2 = HibernateRTCGet();
     n3 = 0;
-    while(n3 < 15 && *alarm_armed == TRUE){
+    i = 0;
+    while(i < 15 && *alarm_armed == TRUE){
         n1 = HibernateRTCGet();
         if(n3 != n1){
             n3 = n1 - n2;
             Lcd_Clear();
-            Lcd_Write_Integer((15-n1));
+            Lcd_Write_Integer((15-n3));
             n3 = n1;
+            i++;
         }
     }
     if(*alarm_armed == TRUE){
         pwm0_start(1000, 60);
-        while(*alarm_armed == TRUE){}
+        update_Trigger_Date_Time();
+        return;
+        //while(*alarm_armed == TRUE){}
         Lcd_Write_String("ALARM DISARMED2!");
         SysCtlDelay(40000);
     }
+    return;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/* void update_Date_Time(void);
+ *
+ * This function was made to update the Date and Time when called. We use the seconds since the last update or when it was set up for the
+ * calculate of change in the Date and Time values. We divide by the each one for the time of one year, month, etc... when the value is
+ * bigger than the accept value (ex one month has a max of 31 days) we subtracted until we can calculate the  accepted value.
+ * After this the RTC clock is reseted to count from 0, so since this change has occurred.
+ */
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void update_Date_Time(void){
+    uint32_t ui32Year, ui32Month, ui32Day, ui32Hour, ui32Min, ui32Sec;
+    ui32Day = sTime.tm_mday;
+    ui32Month = sTime.tm_mon;
+    ui32Year = sTime.tm_year;
+    ui32Year = ui32Year - 100;
+    ui32Hour = sTime.tm_hour;
+    ui32Min = sTime.tm_min;
+    ui32Sec = sTime.tm_sec;
+
+
+    int time = HibernateRTCGet();
+    ui32Year = ui32Year + time/961848000;
+
+    if((time/2635200) > 12){
+        while((time/2635200) > 12) time = time - 961848000;
+    }
+    ui32Month = ui32Month + time/2635200;
+    if(ui32Month > 12) ui32Month = ui32Month - 12;
+
+    if((time/84600) > 31){
+        while((time/84600) > 31) time = time - 2635200;
+    }
+    ui32Day = ui32Day + time/84600;
+    if(ui32Day > 31) ui32Day = ui32Day - 31;
+
+    if((time/3600) > 24){
+        while((time/3600) > 24) time = time - 84600;
+    }
+    ui32Hour = ui32Hour + time/3600;
+    if(ui32Hour > 24) ui32Hour = ui32Hour - 24;
+
+    if((time/60) > 60){
+    while((time/60) > 60) time = time - 3600;
+    }
+    ui32Min = ui32Min + time/60;
+    if(ui32Min > 60) ui32Min = ui32Min - 60;
+
+    if((time) > 60){
+    while((time) > 60) time = time - 60;
+    }
+    ui32Sec = time;
+    if(ui32Sec > 60) ui32Sec = ui32Sec - 60;
+
+    Lcd_Clear();
+    Lcd_Write_Integer2(ui32Year);
+    Lcd_Write_Char('-');
+    Lcd_Write_Integer2(ui32Month);
+    Lcd_Write_Char('-');
+    Lcd_Write_Integer2(ui32Day);
+    Lcd_Write_Char(' ');
+    Lcd_Write_Integer2(ui32Hour);
+    Lcd_Write_Char(':');
+    Lcd_Write_Integer2(ui32Min);
+    Lcd_Write_Char(':');
+    Lcd_Write_Integer2(ui32Sec);
+
+    SysCtlDelay(1000000);
+
+    return;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/* void update_Trigger_Date_Time(void);
+ *
+ * This function was made to update the Date and Time and to registed as the last time the alarm was triggered when called. We use the
+ * seconds since the last update or when it was set up for the calculate of change in the Date and Time values. We divide by the each one
+ * seconds for the time of one year, month, etc... when the value is bigger than the accept value (ex one month has a max of 31 days) we
+ * subtracted until we can calculate the  accepted value.
+ * After this the RTC clock is reseted to count from 0, so since this change has occurred.
+ */
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void update_Trigger_Date_Time(void){
+    uint32_t ui32Year, ui32Month, ui32Day, ui32Hour, ui32Min, ui32Sec;
+    ui32Day = sTime.tm_mday;
+    ui32Month = sTime.tm_mon;
+    ui32Year = sTime.tm_year;
+    ui32Year = ui32Year - 100;
+    ui32Hour = sTime.tm_hour;
+    ui32Min = sTime.tm_min;
+    ui32Sec = sTime.tm_sec;
+
+
+    int time = HibernateRTCGet();
+    ui32Year = ui32Year + time/961848000;
+
+    if((time/2635200) > 12){
+        while((time/2635200) > 12) time = time - 961848000;
+    }
+    ui32Month = ui32Month + time/2635200;
+    if(ui32Month > 12) ui32Month = ui32Month - 12;
+
+    if((time/84600) > 31){
+        while((time/84600) > 31) time = time - 2635200;
+    }
+    ui32Day = ui32Day + time/84600;
+    if(ui32Day > 31) ui32Day = ui32Day - 31;
+
+    if((time/3600) > 24){
+        while((time/3600) > 24) time = time - 84600;
+    }
+    ui32Hour = ui32Hour + time/3600;
+    if(ui32Hour > 24) ui32Hour = ui32Hour - 24;
+
+    if((time/60) > 60){
+    while((time/60) > 60) time = time - 3600;
+    }
+    ui32Min = ui32Min + time/60;
+    if(ui32Min > 60) ui32Min = ui32Min - 60;
+
+    if((time) > 60){
+    while((time) > 60) time = time - 60;
+    }
+    ui32Sec = time;
+    if(ui32Sec > 60) ui32Sec = ui32Sec - 60;
+
+    sTrigger.tm_sec = ui32Sec;
+    sTrigger.tm_min = ui32Min;
+    sTrigger.tm_hour = ui32Hour;
+    sTrigger.tm_mday = ui32Day;
+    sTrigger.tm_mon = ui32Month;
+    sTrigger.tm_year = 100 + ui32Year;
+
+    Lcd_Clear();
+    Lcd_Write_Integer2(ui32Year);
+    Lcd_Write_Char('-');
+    Lcd_Write_Integer2(ui32Month);
+    Lcd_Write_Char('-');
+    Lcd_Write_Integer2(ui32Day);
+    Lcd_Write_Char(' ');
+    Lcd_Write_Integer2(ui32Hour);
+    Lcd_Write_Char(':');
+    Lcd_Write_Integer2(ui32Min);
+    Lcd_Write_Char(':');
+    Lcd_Write_Integer2(ui32Sec);
+
+    SysCtlDelay(1000000);
+
+    return;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/* void show_Trigger_Date_Time(void)
+ *
+ * This function shows the last time the alarm was triggered by accessing the tm sTrigger struct.
+ */
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void show_Trigger_Date_Time(void){
+    uint32_t ui32Year, ui32Month, ui32Day, ui32Hour, ui32Min, ui32Sec;
+    ui32Day = sTrigger.tm_mday;
+    ui32Month = sTrigger.tm_mon;
+    ui32Year = sTrigger.tm_year;
+    ui32Year = ui32Year - 100;
+    ui32Hour = sTrigger.tm_hour;
+    ui32Min = sTrigger.tm_min;
+    ui32Sec = sTrigger.tm_sec;
+
+    Lcd_Clear();
+    Lcd_Write_Integer2(ui32Year);
+    Lcd_Write_Char('-');
+    Lcd_Write_Integer2(ui32Month);
+    Lcd_Write_Char('-');
+    Lcd_Write_Integer2(ui32Day);
+    Lcd_Write_Char(' ');
+    Lcd_Write_Integer2(ui32Hour);
+    Lcd_Write_Char(':');
+    Lcd_Write_Integer2(ui32Min);
+    Lcd_Write_Char(':');
+    Lcd_Write_Integer2(ui32Sec);
+
+    SysCtlDelay(1000000);
+
     return;
 }
 
@@ -58,15 +246,15 @@ void alarm_Triggered(int * alarm_armed){
  *
  * This function was made since we check the PIN more that once program.
  *
- *  We receive the correct PIN from the main.c and Active_State() and compare with PIN_Comparator, a int value that was obtain in the same
- *  as the value PIN with Set_PIN().
+ * We receive the correct PIN from the main.c and Active_State() and compare with PIN_Comparator, a int value that was obtain in the same
+ * as the value PIN with Set_PIN().
  *
- *  The rest is a cycle to only exit if the PIN is right or if the user chooses to exit with a flag that says that the user did not get PIN
- *  right.
+ * The rest is a cycle to only exit if the PIN is right or if the user chooses to exit with a flag that says that the user did not get PIN
+ * right.
  *
- *  If the PIN is correct the function will return 1 and if the user gives up it returns 0.
+ * If the PIN is correct the function will return 1 and if the user gives up it returns 0.
  *
- *  The 'A' button is to repeat the input of the PIN and B is to give up.
+ * The 'A' button is to repeat the input of the PIN and B is to give up.
  */
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int check_PIN (int PIN){
@@ -103,7 +291,7 @@ int check_PIN (int PIN){
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*void Active_state(int PIN, int * alarm_armed, int trigger_distance, int * state);
+/* void Active_state(int PIN, int * alarm_armed, int trigger_distance, int * state);
  *
  * This function was made to keep main.c cleaner. It is the state 1 of the State Machine it uses the PIN, alarm_armed,
  * trigger_distance, state from main.c.
@@ -146,6 +334,8 @@ void Active_state(int PIN, int * alarm_armed, int trigger_distance, int * state)
 
         while(1)
         {
+            key = keypadScan();
+            if (key != 'n') break;
             // Keep updating distance in idle mode
             measure_sonar();
             if(get_value_sonar(data) == 0){
@@ -158,24 +348,29 @@ void Active_state(int PIN, int * alarm_armed, int trigger_distance, int * state)
             if(dist <= trigger_distance && *alarm_armed == TRUE){
                 *state = 2;
                 alarm_Triggered(alarm_armed);
+                return;
             }
-            key = keypadScan();
-            if (key != 'n') break;
         }
 
         switch(key)
         {
             case 'F':
-                *state = 0;
-                return;
+                if (check_PIN(PIN)==1){
+                    *state = 0;
+                    return;
+                }else{
+                    Lcd_Write_String("Config LOCKED");
+                    SysCtlDelay(30000);
+                }
 
             case 'E':
-
+                update_Date_Time();
+                SysCtlDelay(300000);
                 break;
 
             case 'D':
-                Lcd_Write_String("Work in progress");
-                SysCtlDelay(1000000);
+                show_Trigger_Date_Time();
+                SysCtlDelay(300000);
                 break;
 
             case 'C':
@@ -207,7 +402,10 @@ void Active_state(int PIN, int * alarm_armed, int trigger_distance, int * state)
                         {
                             if(key == 'B') break;
 
-                            if(key == 'A') *alarm_armed = FALSE;
+                            if(key == 'A'){
+                                *alarm_armed = FALSE;
+                                break;
+                            }
                         }
                     }
                 }else{
@@ -238,7 +436,10 @@ void Active_state(int PIN, int * alarm_armed, int trigger_distance, int * state)
                          {
                              if(key == 'B') break;
 
-                             if(key == 'A') *alarm_armed = TRUE;
+                             if(key == 'A') {
+                                 *alarm_armed = TRUE;
+                                 break;
+                             }
                          }
                      }
                 }

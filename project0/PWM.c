@@ -3,7 +3,7 @@
 #include "driverlib/pwm.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*void pwm0_init();
+/* void pwm0_init();
  *
  * This function set ups the PWM signal for the Buzzer. It's called in Init_System.c
  */
@@ -18,7 +18,7 @@ void pwm0_init()
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*void pwm0_start(unsigned long frequence, unsigned long duty_cycle);
+/* void pwm0_start(unsigned long frequence, unsigned long duty_cycle);
  *
  * This function starts the PWM signal for the Buzzer with an inputed frequency of 1000 Hz and 60% duty cycle.
  */
@@ -32,7 +32,7 @@ void pwm0_start(unsigned long frequence, unsigned long duty_cycle)
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*void pwm0_stop(void);
+/* void pwm0_stop(void);
  *
  * This function stops the PWM signal for the Buzzer.
  */
