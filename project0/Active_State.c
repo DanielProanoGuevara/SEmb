@@ -271,11 +271,10 @@ int check_PIN (int PIN){
        }
        Lcd_Write_String("Wrong PIN");
        SysCtlDelay(300000);
-       Lcd_Write_String("A to repeat");
-       SysCtlDelay(300000);
        Lcd_Write_String("B to exit");
        SysCtlDelay(300000);
-       Lcd_Clear();
+       Lcd_Write_String("A to repeat");
+       SysCtlDelay(300000);
        while(1)
        {
            key = keypadScan();
@@ -337,18 +336,14 @@ void Active_state(int PIN, int * alarm_armed, int trigger_distance, int * state)
             key = keypadScan();
             if (key != 'n') break;
             // Keep updating distance in idle mode
-            measure_sonar();
-            if(get_value_sonar(data) == 0){
+            if(get_value_sonar(data, trigger_distance, alarm_armed, state) == 0){
                 //Lcd_Write_String("TOO FAR AWAY ");
+            }else if(get_value_sonar(data, trigger_distance, alarm_armed, state) == 2){
+                return;
             }else{
                 Lcd_Write_Integer(dist);
                 Lcd_Write_Char('c');
                 Lcd_Write_Char('m');
-            }
-            if(dist <= trigger_distance && *alarm_armed == TRUE){
-                *state = 2;
-                alarm_Triggered(alarm_armed);
-                return;
             }
         }
 
@@ -391,9 +386,9 @@ void Active_state(int PIN, int * alarm_armed, int trigger_distance, int * state)
                         return;
                     }
 
-                    Lcd_Write_String("A to disarm alarm");
-                    SysCtlDelay(300000);
                     Lcd_Write_String("B to return");
+                    SysCtlDelay(300000);
+                    Lcd_Write_String("A to disarm alarm");
                     SysCtlDelay(300000);
                     while(1)
                     {
@@ -425,9 +420,9 @@ void Active_state(int PIN, int * alarm_armed, int trigger_distance, int * state)
                         return;
                     }
 
-                     Lcd_Write_String("A to arm the alarm");
-                     SysCtlDelay(300000);
                      Lcd_Write_String("B to return");
+                     SysCtlDelay(300000);
+                     Lcd_Write_String("A to arm the alarm");
                      SysCtlDelay(300000);
                      while(1)
                      {

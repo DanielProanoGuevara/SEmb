@@ -15,7 +15,9 @@ void measure_sonar(){
     return;
 }
 
-int get_value_sonar(int *int_data){
+int get_value_sonar(int *int_data, int trigger_distance, int * alarm_armed, int * state){
+
+    measure_sonar();
 
     SysCtlDelay(160000);
 
@@ -33,6 +35,12 @@ int get_value_sonar(int *int_data){
     while(I2CMasterBusy(I2C1_BASE));
     //if(I2CMasterErr()) Lcd_Write_String("ERROR VALUE SONAR");
     *int_data = (int)I2CMasterDataGet(I2C1_BASE);
+
+    if(* int_data <= trigger_distance && *alarm_armed == TRUE){
+        *state = 2;
+        alarm_Triggered(alarm_armed);
+        return 2;
+    }
 
     return 1;
 }
